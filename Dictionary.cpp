@@ -187,15 +187,30 @@ public:
 
     void Sort()
     {
-        std::sort(dict.begin(), dict.end(), [](const Word& w1, const Word& w2)
+        int number;
+        std::cout << "\nПо каким словам произвести сортировку?" << std::endl;
+        std::cout << "Если по английским введите 1, если по русским введите 2: ";
+        std::cin >> number;
+
+        if (number > 2 || number < 1)
+        {
+            std::cout << "Вы ввели неверное значение!" << std::endl;
+            std::cout << "Сортировка не может быть выполнена.\n" << std::endl;
+            return;
+        }
+
+        std::sort(dict.begin(), dict.end(), [&number](const Word& w1, const Word& w2)
             {
-                return (w1.GetEngWord() < w2.GetEngWord());
+                return ((number == 1) ? (w1.GetEngWord() < w2.GetEngWord()) : (w1.GetRusWord() < w2.GetRusWord()));
             });
+
+        std::cout << "Сортировка выполнена!\n" << std::endl;
     }
 
     void Shuffle()
     {
         std::shuffle(dict.begin(), dict.end(), std::mt19937(std::random_device()()));
+        std::cout << "Сортировка выполнена!\n" << std::endl;
     }
 };
 
@@ -219,7 +234,7 @@ int main()
         std::cout << "1. Показать словарь" << std::endl;
         std::cout << "2. Добавить слово в словарь" << std::endl;
         std::cout << "3. Удалить слово из словаря" << std::endl;
-        std::cout << "4. Сортировка словаря по английским словам" << std::endl;
+        std::cout << "4. Сортировка словаря" << std::endl;
         std::cout << "5. Сортировка словаря случайным образом" << std::endl;
         std::cout << "6. Узнать есть ли слово в словаре" << std::endl;
         std::cout << "7. Найти все похожие слова в словаре" << std::endl;
@@ -241,11 +256,9 @@ int main()
             break;
         case '4':
             dict.Sort();
-            std::cout << "Сортировка выполнена.\n" << std::endl;
             break;
         case '5':
             dict.Shuffle();
-            std::cout << "Сортировка выполнена.\n" << std::endl;
             break;
         case '6':
             dict.FindWord();
