@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <iomanip>
 
+#include <random>
+
 #include <windows.h>
 
 class Word
@@ -190,6 +192,11 @@ public:
                 return (w1.GetEngWord() < w2.GetEngWord());
             });
     }
+
+    void Shuffle()
+    {
+        std::shuffle(dict.begin(), dict.end(), std::mt19937(std::random_device()()));
+    }
 };
 
 
@@ -212,9 +219,10 @@ int main()
         std::cout << "1. Показать словарь" << std::endl;
         std::cout << "2. Добавить слово в словарь" << std::endl;
         std::cout << "3. Удалить слово из словаря" << std::endl;
-        std::cout << "4. Сортировка словаря" << std::endl;
-        std::cout << "5. Узнать есть ли слово в словаре" << std::endl;
-        std::cout << "6. Найти все похожие слова в словаре" << std::endl;
+        std::cout << "4. Сортировка словаря по английским словам" << std::endl;
+        std::cout << "5. Сортировка словаря случайным образом" << std::endl;
+        std::cout << "6. Узнать есть ли слово в словаре" << std::endl;
+        std::cout << "7. Найти все похожие слова в словаре" << std::endl;
         std::cout << "EXIT <- Введите 0 чтобы совершить выход из программы" << std::endl;
         std::cin >> choice;
 
@@ -236,9 +244,13 @@ int main()
             std::cout << "Сортировка выполнена.\n" << std::endl;
             break;
         case '5':
-            dict.FindWord();
+            dict.Shuffle();
+            std::cout << "Сортировка выполнена.\n" << std::endl;
             break;
         case '6':
+            dict.FindWord();
+            break;
+        case '7':
             dict.FindMatches();
             break;
         default:
