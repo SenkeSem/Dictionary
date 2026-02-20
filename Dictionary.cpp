@@ -14,6 +14,7 @@ class Word
 private:
     std::string eng_word = "";
     std::string rus_word = "";
+    std::string note = "";
 public:
     Word()
     {
@@ -37,6 +38,21 @@ public:
     std::string GetEngWord() const
     {
         return eng_word;
+    }
+
+    void AddNote(std::string nt)
+    {
+        note += nt;
+    }
+
+    void RemoveNote()
+    {
+        note = "";
+    }
+
+    std::string GetNote() const
+    {
+        return note;
     }
 
 };
@@ -98,6 +114,62 @@ public:
         dict.erase(iter, dict.end());
     }
 
+    void AddNoteWord()
+    {
+        std::string word;
+        std::cout << "Введите слово к которому хотите добавить заметку: ";
+        std::cin >> word;
+
+        if (FindWord(word))
+        {
+            std::cin.ignore();
+            std::string str;
+            std::cout << "Введите заметку, которую хотите добавить к слову: ";
+            std::getline(std::cin, str);
+
+            auto iter = std::find_if(dict.begin(), dict.end(), [&word](const Word& w)
+                {
+                    return w.GetEngWord() == word || w.GetRusWord() == word;
+                }
+            );
+
+            (*iter).AddNote(str);
+        }
+        else
+        {
+            std::cout << "Данное слово в словаре отсутствует." << std::endl;
+        }
+    }
+
+    void ShowWordNote()
+    {
+        std::string word;
+        std::cout << "\nВведите слово заметку которого хотите посмотреть: ";
+        std::cin >> word;
+
+        if (FindWord(word))
+        {
+            auto iter = std::find_if(dict.begin(), dict.end(), [&word](const Word& w)
+                {
+                    return w.GetEngWord() == word || w.GetRusWord() == word;
+                }
+            );
+
+            if ((*iter).GetNote() != "")
+            {
+                std::cout << "Данное слово содержит следующую заметку:" << std::endl;
+                std::cout << (*iter).GetNote() << std::endl;
+            }
+            else
+                std::cout << "У слова \"" << (*iter).GetEngWord() << " - " << (*iter).GetRusWord() << "\" заметка отсутствует." << std::endl;
+         }
+        else
+        {
+            std::cout << "Данное слово в словаре отсутствует." << std::endl;
+            std::cout << std::endl;
+        }
+    }
+
     void ShowDict()
     {
         if (dict.size() == 0)
@@ -146,6 +218,17 @@ public:
             std::cout << "Данное слово отсутствует в словаре!\n" << std::endl;
         else
             std::cout << "Данное слово присутствует в словаре!\n" << std::endl;
+    }
+
+    bool FindWord(std::string input_word)
+    {
+        auto result = std::find_if(dict.begin(), dict.end(), [&input_word](const Word& word)
+            {
+                return word.GetEngWord() == input_word || word.GetRusWord() == input_word;
+            }
+        );
+
+        return (result != dict.end());
     }
 
     void FindMatches()
@@ -273,11 +356,11 @@ int main()
 
     Dictionary dict;
 
-    char choice;
+    std::string choice;
 
     do
     {
-        std::cout << "1. Показать словарь" << std::endl;
+        std::cout << "\n1. Показать словарь" << std::endl;
         std::cout << "2. Добавить слово в словарь" << std::endl;
         std::cout << "3. Удалить слово из словаря" << std::endl;
         std::cout << "4. Сортировка словаря" << std::endl;
@@ -285,41 +368,29 @@ int main()
         std::cout << "6. Узнать есть ли слово в словаре" << std::endl;
         std::cout << "7. Найти все похожие слова в словаре" << std::endl;
         std::cout << "8. Викторина по всем словам" << std::endl;
+        std::cout << "9. Добавить заметку к слову" << std::endl;
+        std::cout << "10. Просмотреть заметку к слову" << std::endl;
         std::cout << "EXIT <- Введите 0 чтобы совершить выход из программы" << std::endl;
         std::cin >> choice;
 
-        switch (choice)
-        {
-        case '1':
-            dict.ShowDict();
-            break;
-        case '2':
+        if (choice == "1") { dict.ShowDict(); }
+        else if (choice == "2") {
             dict.AddWord();
             std::cout << "Слово добавлено.\n" << std::endl;
-            break;
-        case '3':
+        }
+        else if (choice == "3") {
             dict.RemoveWord();
             std::cout << "Слово удалено.\n" << std::endl;
-            break;
-        case '4':
-            dict.Sort();
-            break;
-        case '5':
-            dict.Shuffle();
-            break;
-        case '6':
-            dict.FindWord();
-            break;
-        case '7':
-            dict.FindMatches();
-            break;
-        case '8':
-            dict.Game();
-            break;
-        default:
-            break;
         }
-    } while (choice != '0');
+        else if (choice == "4") { dict.Sort(); }
+        else if (choice == "5") { dict.Shuffle(); }
+        else if (choice == "6") { dict.FindWord(); }
+        else if (choice == "7") { dict.FindMatches(); }
+        else if (choice == "8") { dict.Game(); }
+        else if (choice == "9") { dict.AddNoteWord(); }
+        else if (choice == "10") { dict.ShowWordNote(); }
+
+    } while (choice != "0");
 
 
     return 0;
