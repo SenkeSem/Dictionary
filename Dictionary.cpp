@@ -218,31 +218,30 @@ public:
         int total = 0;
         int correct = 0;
         int wrong = 0;
-        //int number;
+        int number;
 
         std::cout << "\nДобро пожаловать в ВИКТОРИНУ!" << std::endl;
         std::cout << "Сейчас мы проверим ваши знания." << std::endl;
         std::cout << "Если хотите остановить викторину введите 0(ноль)." << std::endl;
         std::cout << "Перед викториной рекомендуется перемешать слова. Удачи!!! :)" << std::endl;
-        //std::cout << "Какие слова желаете переводить?(1 - английские, 2 - русские): " << std::endl;
+        std::cout << "Какие слова желаете переводить?(1 - английские, 2 - русские): " << std::endl;
 
-        //std::cin >> number;
-        //if (number > 2 || number < 1)
-        //{
-        //    std::cout << "Вы ввели неверное значение!" << std::endl;
-        //    std::cout << "Викторина закрыта. Вы удалены из аудитории!\n" << std::endl;
-        //    return;
-        //}
-
+        std::cin >> number;
+        if (number > 2 || number < 1)
+        {
+            std::cout << "Вы ввели неверное значение!" << std::endl;
+            std::cout << "Викторина закрыта. Вы удалены из аудитории!\n" << std::endl;
+            return;
+        }
+        
         for (auto& word : dict)
         {
             std::string str;
-            std::cout << "Введите перевод слова " << word.GetEngWord() << ": ";
+            std::cout << "Введите перевод слова " << ((number == 1) ? word.GetEngWord() : word.GetRusWord()) << ": ";
             std::cin >> str;
 
             if (str == "0") break;
-
-            if (str == word.GetRusWord())
+            if (str == ((number == 1) ? word.GetRusWord() : word.GetEngWord()))
                 correct++;
             else
                 wrong++;
