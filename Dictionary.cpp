@@ -212,6 +212,53 @@ public:
         std::shuffle(dict.begin(), dict.end(), std::mt19937(std::random_device()()));
         std::cout << "Сортировка выполнена!\n" << std::endl;
     }
+
+    void Game()
+    {
+        int total = 0;
+        int correct = 0;
+        int wrong = 0;
+        //int number;
+
+        std::cout << "\nДобро пожаловать в ВИКТОРИНУ!" << std::endl;
+        std::cout << "Сейчас мы проверим ваши знания." << std::endl;
+        std::cout << "Если хотите остановить викторину введите 0(ноль)." << std::endl;
+        std::cout << "Перед викториной рекомендуется перемешать слова. Удачи!!! :)" << std::endl;
+        //std::cout << "Какие слова желаете переводить?(1 - английские, 2 - русские): " << std::endl;
+
+        //std::cin >> number;
+        //if (number > 2 || number < 1)
+        //{
+        //    std::cout << "Вы ввели неверное значение!" << std::endl;
+        //    std::cout << "Викторина закрыта. Вы удалены из аудитории!\n" << std::endl;
+        //    return;
+        //}
+
+        for (auto& word : dict)
+        {
+            std::string str;
+            std::cout << "Введите перевод слова " << word.GetEngWord() << ": ";
+            std::cin >> str;
+
+            if (str == "0") break;
+
+            if (str == word.GetRusWord())
+                correct++;
+            else
+                wrong++;
+
+            total++;
+        }
+
+        std::cout << "\nВы были протестированы на следующем количестве слов: " << total << std::endl;
+        if (total > 0)
+        {
+            std::cout << "Количество верных ответов: " << correct << std::endl;
+            std::cout << "Процент верных ответов: " << (correct * 100 / total) << "%" << std::endl;
+            std::cout << std::endl;
+        }
+        std::cout << "Викторина окончена. Возвращайтесь снова :)\n" << std::endl;
+    }
 };
 
 
@@ -238,6 +285,7 @@ int main()
         std::cout << "5. Сортировка словаря случайным образом" << std::endl;
         std::cout << "6. Узнать есть ли слово в словаре" << std::endl;
         std::cout << "7. Найти все похожие слова в словаре" << std::endl;
+        std::cout << "8. Викторина по всем словам" << std::endl;
         std::cout << "EXIT <- Введите 0 чтобы совершить выход из программы" << std::endl;
         std::cin >> choice;
 
@@ -265,6 +313,9 @@ int main()
             break;
         case '7':
             dict.FindMatches();
+            break;
+        case '8':
+            dict.Game();
             break;
         default:
             break;
