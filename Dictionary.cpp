@@ -16,6 +16,7 @@ private:
     std::string rus_word = "";
     std::string note = "";
     std::string example = "";
+    unsigned int count = 0;
 public:
     Word()
     {
@@ -69,6 +70,16 @@ public:
     std::string GetExample() const
     {
         return example;
+    }
+
+    void Increment()
+    {
+        count++;
+    }
+
+    unsigned int GetCount() const
+    {
+        return count;
     }
 
 };
@@ -211,6 +222,7 @@ public:
             std::cout << "Русское слово: " << (*iter).GetRusWord() << std::endl;
             std::cout << "Заметка: " << note << std::endl;
             std::cout << "Пример использования: " << example << std::endl;
+            std::cout << "Сколько раз встречалось в викторине: " << (*iter).GetCount() << std::endl;
             std::cout << "---------------------------------------------------------" << std::endl;
         }
         else
@@ -246,6 +258,7 @@ public:
         {
             std::cout << "Данное слово в словаре отсутствует." << std::endl;
         }
+        std::cout << "\n";
     }
 
     void ShowWordNote()
@@ -425,6 +438,7 @@ public:
         
         for (auto& word : dict)
         {
+            word.Increment();
             std::string str;
             std::cout << "Введите перевод слова " << ((number == 1) ? word.GetEngWord() : word.GetRusWord()) << ": ";
             std::cin >> str;
