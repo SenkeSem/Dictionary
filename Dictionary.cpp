@@ -189,6 +189,38 @@ public:
         std::cout << "\n";
     }
 
+    void ShowCardWord()
+    {
+        std::string word;
+        std::cout << "\nВведите слово для открытия карточки: ";
+        std::cin >> word;
+
+        if (FindWord(word))
+        {
+            auto iter = std::find_if(dict.begin(), dict.end(), [&word](const Word& w)
+                {
+                    return w.GetEngWord() == word || w.GetRusWord() == word;
+                }
+            );
+
+            std::string note = ((*iter).GetNote() == "") ? "заметка отсутствует" : (*iter).GetNote();
+            std::string example = ((*iter).GetExample() == "") ? "пример использования отсутствует" : (*iter).GetExample();
+
+            std::cout << "---------------------------------------------------------" << std::endl;
+            std::cout << "Английское слово: " << (*iter).GetEngWord() << std::endl;
+            std::cout << "Русское слово: " << (*iter).GetRusWord() << std::endl;
+            std::cout << "Заметка: " << note << std::endl;
+            std::cout << "Пример использования: " << example << std::endl;
+            std::cout << "---------------------------------------------------------" << std::endl;
+        }
+        else
+        {
+            std::cout << "Данное слово в словаре отсутствует." << std::endl;
+            std::cout << std::endl;
+        }
+        std::cout << "\n";
+    }
+
     void AddNoteWord()
     {
         std::string word;
@@ -434,6 +466,7 @@ int main()
 
     do
     {
+        std::cout << "Меню управления словарём:" << std::endl;
         std::cout << "1. Показать словарь" << std::endl;
         std::cout << "2. Добавить слово в словарь" << std::endl;
         std::cout << "3. Удалить слово из словаря" << std::endl;
@@ -442,10 +475,15 @@ int main()
         std::cout << "6. Узнать есть ли слово в словаре" << std::endl;
         std::cout << "7. Найти все похожие слова в словаре" << std::endl;
         std::cout << "8. Викторина по всем словам" << std::endl;
+
+        std::cout << "---------------------------------------------------------" << std::endl;
+        std::cout << "Меню управления словом:" << std::endl;
         std::cout << "9. Добавить заметку к слову" << std::endl;
         std::cout << "10. Просмотреть заметку к слову" << std::endl;
         std::cout << "11. Добавить пример использования к слову" << std::endl;
         std::cout << "12. Просмотреть пример использования к слову" << std::endl;
+        std::cout << "13. Просмотреть карточку слова" << std::endl;
+        std::cout << "---------------------------------------------------------" << std::endl;
         std::cout << "EXIT <- Введите 0 чтобы совершить выход из программы" << std::endl;
         std::cin >> choice;
 
@@ -467,6 +505,7 @@ int main()
         else if (choice == "10") { dict.ShowWordNote(); }
         else if (choice == "11") { dict.AddExampleWord(); }
         else if (choice == "12") { dict.ShowExampleWord(); }
+        else if (choice == "13") { dict.ShowCardWord(); }
 
     } while (choice != "0");
 
