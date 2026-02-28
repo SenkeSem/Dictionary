@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <stack>
 #include <algorithm>
 #include <iomanip>
 
@@ -417,6 +418,8 @@ public:
 
     void Game()
     {
+        std::vector<Word> wrong_word = {};
+        std::vector<std::string> wrong_str = {};
         int total = 0;
         int correct = 0;
         int wrong = 0;
@@ -447,7 +450,11 @@ public:
             if (str == ((number == 1) ? word.GetRusWord() : word.GetEngWord()))
                 correct++;
             else
+            {
                 wrong++;
+                wrong_str.push_back(str);
+                wrong_word.push_back(word);
+            }
 
             total++;
         }
@@ -458,6 +465,15 @@ public:
             std::cout << "Количество верных ответов: " << correct << std::endl;
             std::cout << "Процент верных ответов: " << (correct * 100 / total) << "%" << std::endl;
             std::cout << std::endl;
+
+            std::cout << "Слова в которых была допущена ошибка:" << std::endl;
+            for (int i = 0; i < wrong_word.size(); i++)
+            {
+                std::cout
+                    << "Было введено: " << wrong_str[i]
+                    << ". Правильный вариант: " << wrong_word[i].GetEngWord()
+                    <<" - " << wrong_word[i].GetRusWord() << std::endl;
+            }
         }
         std::cout << "Викторина окончена. Возвращайтесь снова :)\n" << std::endl;
     }
