@@ -7,6 +7,8 @@
 #include <iomanip>
 
 #include <random>
+#include <sstream>
+
 
 #include <windows.h>
 
@@ -477,6 +479,46 @@ public:
         }
         std::cout << "Викторина окончена. Возвращайтесь снова :)\n" << std::endl;
     }
+
+    void AnalyzeUserText()
+    {
+        std::cin.ignore();
+        std::string text;
+        std::cout << "\nВведите предложение, которое хотите проанализировать: ";
+        std::getline(std::cin, text);
+
+        std::istringstream iss(text);
+        std::string word;
+        std::vector<std::string> words = {};
+
+        while (iss >> word) {
+            words.push_back(word);
+        }
+        
+        std::vector<std::string> undetected_words = {};
+
+        for (int i = 0; i < words.size(); i++)
+        {
+            if (!FindWord(words[i]))
+            {
+                undetected_words.push_back(words[i]);
+            }
+        }
+
+        if (undetected_words.size() != 0)
+        {
+            std::cout << "Слова, которые не были обнаружены в словаре:" << std::endl;
+            for (auto& word : undetected_words)
+            {
+                std::cout << word << std::endl;
+            }
+            std::cout << "Рекомендуется их туда добавить, конечно же :)" << std::endl;
+        }
+        else
+            std::cout << "Все слова из предложения находятся в словаре!" << std::endl;
+
+        std::cout << "\n";
+    }
 };
 
 
@@ -514,6 +556,8 @@ int main()
         std::cout << "12. Просмотреть пример использования к слову" << std::endl;
         std::cout << "13. Просмотреть карточку слова" << std::endl;
         std::cout << "---------------------------------------------------------" << std::endl;
+        std::cout << "Продвинутые функции:" << std::endl;
+        std::cout << "14. Сделать анализ строки" << std::endl;
         std::cout << "EXIT <- Введите 0 чтобы совершить выход из программы" << std::endl;
         std::cin >> choice;
 
@@ -536,6 +580,7 @@ int main()
         else if (choice == "11") { dict.AddExampleWord(); }
         else if (choice == "12") { dict.ShowExampleWord(); }
         else if (choice == "13") { dict.ShowCardWord(); }
+        else if (choice == "14") { dict.AnalyzeUserText(); }
 
     } while (choice != "0");
 
